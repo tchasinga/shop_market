@@ -1,63 +1,52 @@
-import { useState , useEffect } from 'react'
-import './styles.css'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import React, { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import image1 from './img/Image01.jpg';
+import image2 from './img/image02.webp';
+import image3 from './img/image03.jpg';
 
-import image1 from './img/Image01.jpg'
-import image2 from './img/image02.webp'
-import image3 from './img/image03.jpg'
+const Parallax = () => {
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
 
-const Paralax = () => {
-    const {innerHeight} = window;
+    gsap.utils.toArray('section').forEach((s, i) => {
+      const getRatio = () => {
+        const innerHeight = window.innerHeight;
+        return innerHeight / (innerHeight + s.offsetHeight);
+      };
 
-    const getRatio = el => innerHeight / (innerHeight + el.offsetHeight)
-    useEffect(() =>{
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('section')
-        .forEach((s, i)=>{
-            s.bg, {
-                backgroundPosition: () =>
-                i
-                ? `50% ${
-                    -innerHeight * getRatio(s)}px
-                    `
-                    :"50% 0px"
-            },
-            {
-                backgroundPosition: () =>
-                `50% ${
-                innerHeight * (1 - getRatio)    
-                }px`,
-                ease : "none",
-                ScrollTrigger: {
-                    trigger: s, 
-                    start: () =>(i
-                        ? "top bottom" : "top top"
-                    ),
-                    end: "bottom top",
-                    scrub : true
-                }
-            }
-        })
-    }, [])
-    return (
-        <>
-          <section>
-            <div className="bg" style={{backgroundImage : `url(${image1})`}}/>
-            <h1>Welcom to shop-market</h1>
-          </section>
+      gsap.to(s.querySelector('.bg'), {
+        backgroundPosition: () => (i ? `50% ${-getRatio() * 100}%` : '50% 0px'),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: s,
+          start: i ? 'top bottom' : 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    });
+  }, []);
 
-          <section>
-            <div className="bg" style={{backgroundImage: `url(${image2})`}}/>
-            <h1>Market news</h1>
-          </section>
+  return (
+    <>
+      <section>
+        <div className="bg" style={{ backgroundImage: `url(${image1})` }} />
+        <h1>Welcome to shop-market</h1>
+      </section>
 
-          <section>
-            <div className="bg" style={{backgroundImage: `url(${image3})`}}/>
-            <h1>Jordan 04 Generation</h1>
-          </section>
-        </>
-    )
-}
-export default  Paralax
+      <section>
+        <div className="bg" style={{ backgroundImage: `url(${image2})` }} />
+        <h1>Market news</h1>
+      </section>
+
+      <section>
+        <div className="bg" style={{ backgroundImage: `url(${image3})` }} />
+        <h1>Jordan 04 Generation</h1>
+      </section>
+    </>
+  );
+};
+
+export default Parallax;
