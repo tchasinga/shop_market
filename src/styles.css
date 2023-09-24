@@ -1,23 +1,41 @@
-html{
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
-}
+/* Parallax.css */
 
-section{
+.carousel-container {
     position: relative;
+    width: 100%;
     height: 100vh;
-}
-
-.bg{
-    position: absolute;
-    top: 0;
-    left: 0;
+    overflow: hidden;
+  }
+  
+  .carousel {
+    display: flex;
+    width: 300%; /* Three images side by side */
+    height: 100%;
+    overflow: hidden;
+    animation: slide 12s infinite alternate linear; /* Optional: Add animation for continuous sliding */
+  }
+  
+  .image1,
+  .image2,
+  .image3 {
+    flex: 1;
     width: 100%;
     height: 100%;
-    z-index: -1;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: brightness(0.68);
-}
+    object-fit: cover; /* Maintain aspect ratio and cover the entire container */
+  }
+  
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    33.33% {
+      transform: translateX(-100%);
+    }
+    66.66% {
+      transform: translateX(-200%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  

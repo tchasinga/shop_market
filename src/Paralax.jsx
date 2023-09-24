@@ -1,52 +1,45 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import './styles.css'
 
 import image1 from './img/Image01.jpg';
 import image2 from './img/image02.webp';
 import image3 from './img/image03.jpg';
 
+// Import any styles you may need
+
+// Initialize GSAP with ScrollTrigger
+gsap.registerPlugin(ScrollTrigger);
+
 const Parallax = () => {
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    gsap.utils.toArray('section').forEach((s, i) => {
-      const getRatio = () => {
-        const innerHeight = window.innerHeight;
-        return innerHeight / (innerHeight + s.offsetHeight);
-      };
-
-      gsap.to(s.querySelector('.bg'), {
-        backgroundPosition: () => (i ? `50% ${-getRatio() * 100}%` : '50% 0px'),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: s,
-          start: i ? 'top bottom' : 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
+    // Create GSAP timeline for the animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.carousel-container', // Use a specific class or element as the trigger
+        start: 'top center', // Start the animation when the trigger is at the top center of the viewport
+        end: 'bottom center', // End the animation when the trigger is at the bottom center of the viewport
+        scrub: true, // Smoothly transition the animation as you scroll
+        pin: true, // Pin the trigger element while the animation is active
+      },
     });
+
+    // Create animations for each image
+    tl.to('.image1', { xPercent: -100 });
+    tl.to('.image2', { xPercent: -100 });
+    tl.to('.image3', { xPercent: -100 });
   }, []);
 
   return (
-    <>
-      <section>
-        <div className="bg" style={{ backgroundImage: `url(${image1})` }} />
-        <h1>Welcome to shop-market</h1>
-      </section>
-
-      <section>
-        <div className="bg" style={{ backgroundImage: `url(${image2})` }} />
-        <h1>Market news</h1>
-      </section>
-
-      <section>
-        <div className="bg" style={{ backgroundImage: `url(${image3})` }} />
-        <h1>Jordan 04 Generation</h1>
-      </section>
-    </>
+    <div className="carousel-container">
+      <div className="carousel">
+        <img className="image1" src={image1} alt="Image 1" />
+        <img className="image2" src={image2} alt="Image 2" />
+        <img className="image3" src={image3} alt="Image 3" />
+      </div>
+    </div>
   );
 };
 
-export default Parallax;
+export default { Parallax , image1, image2, image3};
